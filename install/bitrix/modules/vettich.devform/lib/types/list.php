@@ -4,7 +4,7 @@ namespace vettich\devform\types;
 /**
 * @author Oleg Lenshin (Vettich)
 */
-class list extends _type
+class my_list extends _type
 {
 	public $content = '<select name="{name}[]" id="{id}" multiple="" {params}>{options}</select>';
 	public $content_multiple = '<select name="{name}[]" id="{id}" multiple="" {params}>{options}</select>';
