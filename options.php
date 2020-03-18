@@ -2,12 +2,14 @@
 IncludeModuleLangFile(__FILE__);
 use vettich\SP\Module;
 
-if (!CModule::IncludeModule('vettich.sp')) {
+if (!CModule::IncludeModule('vettich.sp')) 
+{
 	echo "Module \"vettich.sp\" not installed.<br/>";
 	return;
 }
 
-if (!CModule::IncludeModule('vettich.devform')) {
+if (!CModule::IncludeModule('vettich.devform')) 
+{
 	echo "Module \"vettich.devform\" not installed.<br/>";
 	return;
 }
@@ -16,32 +18,41 @@ $data = new vettich\devform\data\coption(array(
 	'module_id' => 'vettich.sp',
 	'prefix' => '_',
 ));
-if(($apikey = $data->get('antigate_apikey', '')) != '') {
+if(($apikey = $data->get('antigate_apikey', '')) != '') 
+{
 	$balance = vettich\SP\Antigate::getBalance($apikey);
 }
-if(!empty($_POST)) {
-	if($_POST['_method_post'] == 'cloud_cron' && $data->get('_method_post', 'hit') != 'cloud_cron') {
+if(!empty($_POST)) 
+{
+	if($_POST['_method_post'] == 'cloud_cron' && $data->get('_method_post', 'hit') != 'cloud_cron') 
+	{
 		$id = Module::curlGet('http://cron.vettich.ru/cron.php?method=save&url='.Module::cloudCronUrl());
 		$_POST['_method_post_cloud_cron_id'] = $id;
-	} elseif($_POST['_method_post'] != 'cloud_cron' && $data->get('_method_post', 'hit') == 'cloud_cron') {
+	}
+	elseif($_POST['_method_post'] != 'cloud_cron' && $data->get('_method_post', 'hit') == 'cloud_cron') 
+	{
 		$_POST['_method_post_cloud_cron_id'] = '';
 		$id = Module::curlGet('http://cron.vettich.ru/cron.php?method=remove&id='.$data->get('_method_post_cloud_cron_id', ''));
 	}
 }
 
-if(!(($is_period = $_POST['_QUEUE_IS_PERIOD']) or ($is_period = $data->get('_QUEUE_IS_PERIOD')))) {
+if(!(($is_period = $_POST['_QUEUE_IS_PERIOD']) or ($is_period = $data->get('_QUEUE_IS_PERIOD')))) 
+{
 	$is_period = 'N';
 }
-if(!(($every = $_POST['_QUEUE_EVERY']) or ($every = $data->get('_QUEUE_EVERY')))) {
+if(!(($every = $_POST['_QUEUE_EVERY']) or ($every = $data->get('_QUEUE_EVERY')))) 
+{
 	$every = 'DAY';
 }
 // if(!(($queue_mode = $_POST['_QUEUE_MODE']) or ($queue_mode = $data->get('_QUEUE_MODE')))) {
 // 	$queue_mode = 'CONSISTENTLY';
 // }
 
-function _getMonthDays() {
+function _getMonthDays() 
+{
 	$result = array();
-	for($i=1; $i<=31; $i++) {
+	for($i=1; $i<=31; $i++) 
+	{
 		$result[$i] = $i;
 	}
 	return $result;
@@ -74,7 +85,8 @@ $period_values = array(
 );
 
 $nextPublishDatetime = false;
-if($nextPublishDatetime = $data->get('_NEXT_PUBLISH_AT')) {
+if($nextPublishDatetime = $data->get('_NEXT_PUBLISH_AT')) 
+{
 	$nextPublishDatetime = $nextPublishDatetime->toString();
 	$nextPublishDatetime = str_replace(':', '\:', $nextPublishDatetime);
 }
@@ -192,10 +204,10 @@ foreach($socialNetworks as $network) {
 			'params' => $asnParams,
 		),
 		/*array(
-			'name' => 'Åäèíàÿ î÷åðåäü',
-			'title' => 'Íàñòðîéêè åäèíîé î÷åðåäè',
+			'name' => 'Ã…Ã¤Ã¨Ã­Ã Ã¿ Ã®Ã·Ã¥Ã°Ã¥Ã¤Ã¼',
+			'title' => 'ÃÃ Ã±Ã²Ã°Ã®Ã©ÃªÃ¨ Ã¥Ã¤Ã¨Ã­Ã®Ã© Ã®Ã·Ã¥Ã°Ã¥Ã¤Ã¨',
 			'params' => array(
-				'_QUEUE_ENABLE' => 'checkbox:Åäèíàÿ î÷åðåäü àêòèâíà:Y',
+				'_QUEUE_ENABLE' => 'checkbox:Ã…Ã¤Ã¨Ã­Ã Ã¿ Ã®Ã·Ã¥Ã°Ã¥Ã¤Ã¼ Ã ÃªÃ²Ã¨Ã¢Ã­Ã :Y',
 				'_QUEUE_INTERVAL' => 'number:#VAP_PENDING_INTERVAL#:120:help=#VAP_PENDING_INTERVAL_HELP#:params=[min=1]',
 				'_QUEUE_IS_PERIOD' => 'checkbox:#VAP_PENDING_IS_PERIOD#:refresh=Y:help=#VAP_PENDING_IS_PERIOD_HELP#',
 				'_QUEUE_PERIOD_FROM' => $is_period!='Y' ? 'hidden' : array(
